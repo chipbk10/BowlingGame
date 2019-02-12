@@ -1,43 +1,44 @@
 
 public class BowlingGame {
 
-    private Integer[][] rolls = new Integer[12][2];
-    private int cur = 0;
+    Integer[][] rolls = new Integer[12][2];
+    int cur = 0;
 
     public void roll(int pins) {
         if (cur == 12) return;  // can't add more
         if (pins == 10) rolls[cur++][0] = 10;   // strike
         else {
+            // identify first or second attempt
             int i = (rolls[cur][0] == null) ? 0 : 1;
             rolls[cur][i] = pins;
+            // the current frame is finished
             if (i == 1) cur++;
         }
     }
 
     public int getScore() {
         int score = 0;
-        for (int i = 0; i < 12; i++) {
+        for (int i = 0; i < 10; i++) {
             score += scoreAt(i);
-            if (i >= 9) continue; // last frame
-            if (strikeAt(i)) {
+            if (isStrikeAt(i)) {
                 score += scoreAt(i+1);
-                if (strikeAt(i+1)) score += 10;
+                if (isStrikeAt(i+1)) score += rolls[i+2][0];
             }
-            else if (spareAt(i)) score += rolls[i+1][0];
+            else if (isSpareAt(i)) score += unbox(rolls[i+1][0]);
         }
         return score;
     }
 
-    public int scoreAt(int frame) {
-        return unbox(rolls[frame][0]) + unbox(rolls[frame][1]);
+    private int scoreAt(int i) {
+        return unbox(rolls[i][0]) + unbox(rolls[i][1]);
     }
 
-    public boolean spareAt(int frame) {
-        return (rolls[frame][0] != null && scoreAt(frame) == 10);
+    private boolean isSpareAt(int i) {
+        return scoreAt(i) == 10;
     }
 
-    public boolean strikeAt(int frame) {
-        return (unbox(rolls[frame][0]) == 10);
+    private boolean isStrikeAt(int i) {
+        return (unbox(rolls[i][0]) == 10);
     }
 
     private int unbox(Integer n) {

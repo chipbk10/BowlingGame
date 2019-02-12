@@ -25,16 +25,15 @@ class BowlingGameTest {
     }
 
     @Test
-    public void testAllNinesAndMisses() {
-        rolls(10, 9, 0);
-        Assertions.assertEquals(90, game.getScore());
+    public void testAllThrees() {
+        rolls(10, 3, 3);
+        Assertions.assertEquals(60, game.getScore());
     }
 
     @Test
-    public void testAllFives() {
-        rolls(10, 5, 5);
-        game.roll(5); // bonus
-        Assertions.assertEquals(150, game.getScore());
+    public void testAllNinesAndMisses() {
+        rolls(10, 9, 0);
+        Assertions.assertEquals(90, game.getScore());
     }
 
     @Test
@@ -57,19 +56,22 @@ class BowlingGameTest {
     }
 
     @Test
-    public void testAllSpares() {
-        rolls(10, 4, 6);
-        game.roll(5); // bonus
-        Assertions.assertEquals(141, game.getScore());
-    }
-
-    @Test
     public void testOneStrike() {
         game.roll(10); // strike
         game.roll(5);
         game.roll(3);
         rolls(8, 0, 0);
         Assertions.assertEquals(26, game.getScore());
+    }
+
+    @Test
+    public void testDoubleStrike() {
+        game.roll(10); // strike
+        game.roll(10); // double strike
+        game.roll(5);
+        game.roll(3);
+        rolls(8, 0, 0);
+        Assertions.assertEquals(51, game.getScore());
     }
 
     @Test
