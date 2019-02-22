@@ -22,7 +22,7 @@ public class BowlingGame {
             score += scoreAt(i);
             if (isStrikeAt(i)) {
                 score += scoreAt(i+1);
-                if (isStrikeAt(i+1)) score += rolls[i+2][0];
+                if (isStrikeAt(i+1)) score += unbox(rolls[i+2][0]);
             }
             else if (isSpareAt(i)) score += unbox(rolls[i+1][0]);
         }
